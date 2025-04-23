@@ -55,11 +55,13 @@ async function main() {
             process.env.FALLBACK_LINE_ITEM_DESCRIPTION ||
             "Unknown line item",
           price: line.amount / 100,
+          ledger_account_id: process.env.MONEYBIRD_LEDGER_ACCOUNT_ID,
         };
       }) ?? [
         {
           description: process.env.FALLBACK_LINE_ITEM_DESCRIPTION,
           price: payment.amount / 100,
+          ledger_account_id: process.env.MONEYBIRD_LEDGER_ACCOUNT_ID,
         },
       ];
 
@@ -68,6 +70,7 @@ async function main() {
         contact_id: process.env.MONEYBIRD_CONTACT_ID as string,
         details_attributes: lineItems,
         prices_are_incl_tax: true,
+        date: new Date(payment.created * 1000).toISOString(),
       };
     });
 
@@ -85,11 +88,9 @@ async function main() {
         throw new Error(`Payment record not found for invoice ${invoice.id}`);
       }
 
-      console.log({ invoice });
-
       return {
-        payment_date: invoice.payment_date,
-        price: invoice.total_amount / 100,
+        payment_date: invoice.date,
+        price: invoice.total_unpaid,
         invoice_id: invoice.id,
         financial_account_id: process.env
           .MONEYBIRD_FINANCIAL_ACCOUNT_ID as string,
@@ -110,12 +111,3 @@ async function main() {
 }
 
 main();
-
-// How this works:
-// 1. Look up Stripe transactions for a specific date range
-// 2. Create Moneybird invoice for each transaction with the correct date, amount and description being the Stripe transaction id
-// 3. Create payment for Moneybird invoice
-
-// In: 9,75
-// Return 9,75
-//

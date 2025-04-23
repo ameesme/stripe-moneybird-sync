@@ -16,6 +16,8 @@ Creates MoneyBird-invoices for individual Stripe-transactions. Used for Lomo.
 | MONEYBIRD_ADMINISTRATION_ID | The ID of your MoneyBird administration |
 | MONEYBIRD_CONTACT_ID | The ID of the contact in MoneyBird to associate with invoices |
 | MONEYBIRD_FINANCIAL_ACCOUNT_ID | The ID of the financial account in MoneyBird for the invoice payment transactions |
+| MONEYBIRD_LEDGER_ACCOUNT_ID | The ID of the category in MoneyBird for the invoice line-items (like "Revenue") |
+
 | FALLBACK_LINE_ITEM_DESCRIPTION | Default description used when Stripe line items are missing or no invoice is created |
 | MAX_DAYS_PER_REQUEST | Maximum number of days to include in a single API request (default: 30) |
 
