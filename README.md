@@ -8,6 +8,10 @@ Creates MoneyBird-invoices for individual Stripe-transactions. Used for Lomo.
 - Run `yarn`
 - Run `yarn start --date-start 01-01-2025 --date-end 31-03-2025`
 
+**Additional flags**
+- `--dry-run`: Run in test mode without creating any records in MoneyBird
+- `--just-one`: Process only the first transaction found (useful for testing)
+
 ## Environment variables
 | Variable | Description |
 |----------|-------------|
@@ -17,10 +21,8 @@ Creates MoneyBird-invoices for individual Stripe-transactions. Used for Lomo.
 | MONEYBIRD_CONTACT_ID | The ID of the contact in MoneyBird to associate with invoices |
 | MONEYBIRD_FINANCIAL_ACCOUNT_ID | The ID of the financial account in MoneyBird for the invoice payment transactions |
 | MONEYBIRD_LEDGER_ACCOUNT_ID | The ID of the category in MoneyBird for the invoice line-items (like "Revenue") |
-
 | FALLBACK_LINE_ITEM_DESCRIPTION | Default description used when Stripe line items are missing or no invoice is created |
 | MAX_DAYS_PER_REQUEST | Maximum number of days to include in a single API request (default: 30) |
-
 
 ## How it works
 ### 1. Fetch Stripe Payment Intents
@@ -31,10 +33,7 @@ Create a new external invoice in Moneybird, using the Stripe payment intent ID a
 
 If no invoice or line-items are defined in Stripe, the `FALLBACK_LINE_ITEM_DESCRIPTION` will be used.
 
-### 3. Log Stripe Processing Fees
-Add a separate transaction to account for the Stripe processing fee associated with each payment.
-
-### 4. Register Payment
+### 3. Register Payment
 Record a payment on the invoice for the total amount.
 
 ## Configuring MoneyBird
